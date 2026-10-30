@@ -1,0 +1,347 @@
+
+/* ===== Main Container ===== */
+.patient-form-container {
+  min-height: 100vh;
+  padding: 50px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f7f4ec, #e8f1ed);
+  font-family: "Segoe UI", Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+/* ===== Form Card ===== */
+.patient-form {
+  width: 100%;
+  max-width: 620px;
+  padding: 38px;
+  background: #ffffff;
+  border: 1px solid #e3eae5;
+  border-radius: 20px;
+  box-shadow: 0 15px 45px rgba(40, 84, 80, 0.12);
+  box-sizing: border-box;
+}
+
+/* ===== Heading ===== */
+.patient-form h2 {
+  margin: 0 0 10px;
+  color: #285450;
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.form-description {
+  margin: 0 0 30px;
+  color: #737d78;
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* ===== Form Groups ===== */
+.patient-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 22px;
+}
+
+.patient-form .form-group label {
+  margin-bottom: 9px;
+  color: #2e4844;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ===== Input Fields ===== */
+.patient-form input[type="text"],
+.patient-form input[type="tel"],
+.patient-form input[type="number"],
+.patient-form select,
+.patient-form textarea {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid #d8e2dc;
+  border-radius: 10px;
+  background: #fbfcfa;
+  color: #273c38;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+}
+
+.patient-form input::placeholder,
+.patient-form textarea::placeholder {
+  color: #a0aaa4;
+}
+
+.patient-form input:focus,
+.patient-form select:focus,
+.patient-form textarea:focus {
+  border-color: #285450;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(40, 84, 80, 0.1);
+}
+
+.patient-form textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.patient-form select {
+  cursor: pointer;
+}
+
+/* ===== PDF Upload Section ===== */
+.patient-form input[type="file"] {
+  width: 100%;
+  padding: 16px;
+  border: 2px dashed #a9c5b9;
+  border-radius: 12px;
+  background: #f5f9f5;
+  color: #52645c;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.patient-form input[type="file"]:hover {
+  border-color: #285450;
+  background: #edf5ef;
+}
+
+.patient-form input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 7px;
+  background: #285450;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.patient-form .form-group small {
+  margin-top: 9px;
+  color: #77837c;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ===== Selected PDF List ===== */
+.selected-reports {
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px solid #dce9df;
+  border-radius: 10px;
+  background: #f6faf6;
+}
+
+.selected-reports p {
+  margin: 0 0 10px;
+  color: #285450;
+  font-size: 14px;
+}
+
+.selected-reports ul {
+  max-height: 180px;
+  margin: 0;
+  padding-left: 20px;
+  overflow-y: auto;
+}
+
+.selected-reports li {
+  margin-bottom: 8px;
+  color: #52645c;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.selected-reports li:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== Success and Error Messages ===== */
+.form-message {
+  margin-bottom: 22px;
+  padding: 13px 15px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.form-message.success {
+  border: 1px solid #b8dfc4;
+  background: #edf8f0;
+  color: #21663a;
+}
+
+.form-message.error {
+  border: 1px solid #f0c3c3;
+  background: #fff0f0;
+  color: #a52e2e;
+}
+
+/* ===== Submit Button ===== */
+.patient-form button[type="submit"] {
+  width: 100%;
+  margin-top: 5px;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #285450;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(40, 84, 80, 0.16);
+  transition: background 0.25s ease, transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.patient-form button[type="submit"]:hover:not(:disabled) {
+  background: #1d403c;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(40, 84, 80, 0.22);
+}
+
+.patient-form button[type="submit"]:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.patient-form button[type="submit"]:disabled {
+  background: #91a7a0;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ===== Tablet ===== */
+@media (max-width: 768px) {
+  .patient-form-container {
+    padding: 30px 16px;
+  }
+
+  .patient-form {
+    padding: 30px 24px;
+  }
+
+  .patient-form h2 {
+    font-size: 26px;
+  }
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 480px) {
+  .patient-form-container {
+    min-height: 100vh;
+    padding: 20px 12px;
+    align-items: flex-start;
+  }
+
+  .patient-form {
+    padding: 24px 18px;
+    border-radius: 15px;
+  }
+
+  .patient-form h2 {
+    font-size: 23px;
+  }
+
+  .form-description {
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+
+  .patient-form .form-group {
+    margin-bottom: 19px;
+  }
+
+  .patient-form input[type="text"],
+  .patient-form input[type="tel"],
+  .patient-form input[type="number"],
+  .patient-form select,
+  .patient-form textarea {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .patient-form input[type="file"] {
+    padding: 12px;
+  }
+
+  .patient-form button[type="submit"] {
+    padding: 14px;
+  }
+}
+
+/* Remove PDF Button */
+.remove-report-btn {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 6px 12px;
+  border: 1px solid #e8b4b4;
+  border-radius: 6px;
+  background-color: #fff0f0;
+  color: #c0392b;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.remove-report-btn:hover {
+  background-color: #c0392b;
+  border-color: #c0392b;
+  color: #ffffff;
+  box-shadow: 0 3px 8px rgba(192, 57, 43, 0.2);
+}
+
+.remove-report-btn:active {
+  transform: scale(0.96);
+}
+
+/* Selected PDF List Layout */
+.selected-reports li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid #e4ebe5;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+/* PDF Filename */
+.selected-reports li span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #52645c;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .selected-reports li {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .remove-report-btn {
+    margin-left: 0;
+    align-self: flex-start;
+  }
+}

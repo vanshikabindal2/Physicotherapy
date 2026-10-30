@@ -1,0 +1,261 @@
+
+* {
+  box-sizing: border-box;
+}
+
+.why-section {
+  width: 100%;
+  padding: 40px 3.3%;
+  display: grid;
+  grid-template-columns: 40% 1fr;
+  gap: 4%;
+  align-items: start;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.why-image {
+  width: 100%;
+  height: 525px;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.why-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.why-content {
+  width: 100%;
+}
+
+.why-content h2 {
+  margin: -7px 0 20px;
+  color: #171717;
+  font-size: clamp(32px, 3.3vw, 44px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.why-intro {
+  margin: 0 0 30px;
+  color: #454545;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.why-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.why-item {
+  background: #f4f4f4;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+.why-question {
+  width: 100%;
+  min-height: 56px;
+  padding: 16px 20px;
+  border: none;
+  background: transparent;
+  color: #202020;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.why-arrow {
+  flex-shrink: 0;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.why-item.active {
+    background: linear-gradient(100deg, #254845,#45bcb2);
+
+  color: #ffffff;
+}
+
+.why-item.active .why-question {
+  color: #ffffff;
+}
+
+.why-answer {
+  padding: 0 20px 20px;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.8;
+  animation: answerShow 0.25s ease;
+}
+
+@keyframes answerShow {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.why-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 180px;
+  margin-top: 26px;
+  padding: 15px 30px;
+  border-radius: 40px;
+  background: linear-gradient(100deg, #45bcb2, #254845);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: transform 0.3s ease;
+}
+
+.why-button:hover {
+  transform: translateY(-3px);
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .why-section {
+    grid-template-columns: 1fr 1.1fr;
+    gap: 25px;
+    padding: 30px 4%;
+  }
+
+  .why-image {
+    height: 450px;
+  }
+
+  .why-question {
+    font-size: 14px;
+    padding: 15px;
+  }
+
+  .why-answer {
+    padding: 0 15px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+  .why-section {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 25px 18px;
+  }
+
+  .why-image {
+    height: 320px;
+    border-radius: 15px;
+  }
+
+  .why-content h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+
+  .why-intro {
+    font-size: 15px;
+    margin-bottom: 22px;
+  }
+
+  .why-question {
+    min-height: 55px;
+    font-size: 14px;
+    padding: 15px;
+  }
+
+  .why-answer {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .why-button {
+    margin-top: 22px;
+  }
+}
+
+.why-image {
+  width: 100%;
+  height: 525px;
+  overflow: hidden;
+  border-radius: 20px;
+  position: relative;
+  animation: imageReveal 1s ease-out both;
+}
+
+/* Image animation */
+.why-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  animation: imageZoom 1.2s ease-out both;
+  transition: transform 0.7s ease;
+}
+
+/* Hover par smooth zoom */
+.why-image:hover img {
+  transform: scale(1.06);
+}
+
+/* Image reveal effect */
+@keyframes imageReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Starting zoom animation */
+@keyframes imageZoom {
+  from {
+    transform: scale(1.12);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .why-image {
+    height: 450px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+  .why-image {
+    height: 320px;
+    border-radius: 15px;
+  }
+}

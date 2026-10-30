@@ -1,0 +1,240 @@
+
+.records-page {
+  min-height: 100vh;
+  padding: 45px 20px;
+  background: #f3f8f6;
+  color: #263d39;
+  font-family: Arial, sans-serif;
+}
+
+.records-header {
+  max-width: 900px;
+  margin: 0 auto 30px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.records-logo {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  background: #285450;
+  color: white;
+  font-size: 30px;
+  border-radius: 16px;
+}
+
+.records-eyebrow {
+  color: #62827b;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin: 0 0 8px;
+}
+
+.records-header h1 {
+  font-size: 32px;
+  margin: 0 0 8px;
+  color: #285450;
+}
+
+.records-header p:last-child {
+  color: #71817c;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.records-card {
+  max-width: 900px;
+  margin: 0 auto 25px;
+  padding: 30px;
+  background: white;
+  border: 1px solid #e0ebe7;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(40, 84, 80, 0.07);
+}
+
+.records-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e7efec;
+}
+
+.patient-avatar {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e1efeb;
+  color: #285450;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.records-card-heading h2 {
+  margin: 0 0 6px;
+  color: #285450;
+  text-transform: capitalize;
+}
+
+.records-card-heading p {
+  margin: 0;
+  color: #84918d;
+  font-size: 14px;
+}
+
+.records-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  padding: 25px 0;
+}
+
+.records-details div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: #f7faf9;
+  border-radius: 12px;
+}
+
+.records-details span {
+  color: #81908a;
+  font-size: 13px;
+}
+
+.records-details strong {
+  color: #304b45;
+  overflow-wrap: anywhere;
+}
+
+.records-report-section {
+  border-top: 1px solid #e7efec;
+  padding-top: 25px;
+}
+
+.records-report-section h3 {
+  margin: 0 0 8px;
+  color: #285450;
+  font-size: 22px;
+}
+
+.records-report-subtitle {
+  margin: 0 0 20px;
+  color: #81908a;
+  font-size: 14px;
+}
+
+.records-report-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 17px;
+  margin-bottom: 12px;
+  border: 1px solid #e0eae6;
+  border-radius: 14px;
+  background: #fbfdfc;
+}
+
+.pdf-icon {
+  min-width: 48px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  background: #fbe9e7;
+  color: #b74c43;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.pdf-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.pdf-info strong {
+  overflow-wrap: anywhere;
+  color: #354d47;
+}
+
+.pdf-info span {
+  color: #87938e;
+  font-size: 12px;
+}
+
+.records-view-button,
+.records-message button {
+  border: none;
+  background: #285450;
+  color: white;
+  border-radius: 9px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.records-view-button:hover,
+.records-message button:hover {
+  background: #1b403c;
+}
+
+.records-message {
+  max-width: 600px;
+  margin: 100px auto;
+  text-align: center;
+  padding: 35px;
+  background: white;
+  border-radius: 18px;
+}
+
+.records-message h2 {
+  color: #285450;
+}
+
+.records-message p {
+  color: #71817c;
+  line-height: 1.6;
+}
+
+.records-footer {
+  padding: 25px 10px;
+  text-align: center;
+  color: #82918b;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .records-page {
+    padding: 28px 14px;
+  }
+
+  .records-header h1 {
+    font-size: 25px;
+  }
+
+  .records-card {
+    padding: 20px;
+  }
+
+  .records-details {
+    grid-template-columns: 1fr;
+  }
+
+  .records-report-item {
+    flex-wrap: wrap;
+  }
+
+  .records-view-button {
+    width: 100%;
+  }
+}

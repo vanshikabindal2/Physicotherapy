@@ -1,0 +1,178 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=DM+Sans:wght@400;500&display=swap");
+
+.tst {
+  --tst-bg: #285450;
+  --tst-dark: #b7ddd1;
+  --tst-accent: #45e5b5;
+  --tst-text: #5f7a73;
+  box-sizing: border-box;
+  background-color: var(--tst-bg);
+  /* World map chahiye to ye line uncomment karke apni image ka path dein:
+  background-image: url("./world-map.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; */
+  padding: 64px 24px 72px;
+  font-family: "DM Sans", Arial, sans-serif;
+}
+
+.tst *,
+.tst *::before,
+.tst *::after {
+  box-sizing: border-box;
+}
+
+/* Heading */
+.tst__head {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.tst__pill {
+  display: inline-block;
+  background: #fff;
+  color: var(--tst-accent);
+  font-family: Archivo, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 999px;
+}
+
+.tst__title {
+  font-family: Archivo, Arial, sans-serif;
+  font-weight: 800;
+  font-size: clamp(32px, 4.4vw, 54px);
+  color: var(--tst-dark);
+  margin: 14px 0 0;
+  letter-spacing: -0.01em;
+}
+
+.tst__title span {
+  color: var(--tst-accent);
+}
+
+/* Slider */
+.tst__viewport {
+  max-width: 1300px;
+  margin: 0 auto;
+  overflow: hidden;
+  /* shadow cut na ho isliye thoda padding */
+  padding: 8px 0 16px;
+}
+
+.tst__track {
+  display: flex;
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+}
+
+.tst__slide {
+  flex: 0 0 auto;
+  padding: 0 16px;
+}
+
+/* Card */
+.tst__card {
+  height: 100%;
+  min-height: 356px;
+  background: #fff;
+  border-radius: 32px;
+  padding: 40px 40px 36px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 24px rgba(21, 63, 49, 0.06);
+}
+
+.tst__rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tst__stars {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.tst__stars svg {
+  width: 20px;
+  height: 20px;
+  fill: #f59e0b;
+}
+
+.tst__rtitle {
+  color: var(--tst-text);
+  font-size: 16px;
+}
+
+.tst__text {
+  color: var(--tst-text);
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 24px 0 0;
+  flex: 1;
+}
+
+.tst__user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.tst__avatar {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 auto;
+}
+
+.tst__name {
+  font-family: Archivo, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--tst-dark);
+}
+
+.tst__role {
+  color: var(--tst-text);
+  font-size: 16px;
+}
+
+/* Dots */
+.tst__dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.tst__dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #b9cdc7;
+  cursor: pointer;
+  transition: width 0.3s, background 0.3s;
+}
+
+.tst__dot.is-active {
+  width: 28px;
+  background: var(--tst-accent);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .tst {
+    padding: 48px 12px 56px;
+  }
+  .tst__head {
+    margin-bottom: 40px;
+  }
+  .tst__card {
+    padding: 32px 26px 28px;
+    min-height: 330px;
+  }
+}

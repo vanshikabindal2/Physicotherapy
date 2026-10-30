@@ -1,0 +1,157 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.admin-login-page,
+.admin-welcome-page {
+  min-height: 100vh;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #edf4ee, #dce9df, #f7f5ed);
+}
+
+.login-card,
+.welcome-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 20px 60px rgba(28, 67, 48, 0.12);
+}
+
+.login-logo,
+.welcome-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 22px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: #204d3d;
+  color: white;
+  font-size: 30px;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: #548068;
+  letter-spacing: 2px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.login-card h1,
+.welcome-card h1 {
+  margin: 12px 0;
+  text-align: center;
+  color: #203d31;
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+}
+
+.login-description,
+.welcome-card > p {
+  text-align: center;
+  color: #7c8b80;
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-card label {
+  margin: 15px 0 8px;
+  color: #344e40;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #dce6dd;
+  border-radius: 10px;
+  background: #fbfdfb;
+  outline: none;
+  font-size: 14px;
+}
+
+.login-card input:focus {
+  border-color: #438264;
+  box-shadow: 0 0 0 3px rgba(67, 130, 100, 0.1);
+}
+
+.login-button,
+.logout-button {
+  width: 100%;
+  margin-top: 24px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #204d3d;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.login-button:hover {
+  background: #326b51;
+}
+
+.login-error {
+  margin: 14px 0 0;
+  color: #c0392b;
+  font-size: 13px;
+}
+
+.login-footer {
+  margin: 28px 0 0;
+  text-align: center;
+  color: #93a096;
+  font-size: 11px;
+}
+
+.welcome-card {
+  text-align: center;
+}
+
+.welcome-icon {
+  background: #e0f2e5;
+  color: #277448;
+}
+
+.logout-button {
+  margin-top: 12px;
+  background: #e9efea;
+  color: #244735;
+}
+
+@media (max-width: 480px) {
+  .login-card,
+  .welcome-card {
+    padding: 28px 22px;
+  }
+
+  .login-card h1,
+  .welcome-card h1 {
+    font-size: 28px;
+  }
+}

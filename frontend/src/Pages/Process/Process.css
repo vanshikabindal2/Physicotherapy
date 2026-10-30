@@ -1,0 +1,180 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+
+/* =========================================================
+   PROCESS SECTION  (scroll-driven timeline)
+   ========================================================= */
+.process-section {
+  /* >>> Apne header ki height ke hisaab se ye value badlo <<< */
+  --pr-sticky-top: 95px;
+
+  --pr-green: #3EA39A;
+  --pr-green-light: #d3e6dc;
+  --pr-dark: #2c4a5a;
+  --pr-card: #ececec;
+  --pr-muted: #5b6770;
+
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  font-family: "DM Sans", sans-serif;
+  color: var(--pr-dark);
+}
+.process-section *,
+.process-section *::before,
+.process-section *::after {
+  box-sizing: border-box;
+}
+
+.process-head { text-align: center; margin-bottom: 26px; }
+.process-head h2 { margin: 0 0 10px; font-size: clamp(26px, 3vw, 34px); font-weight: 700; }
+.process-head p { margin: 0; font-size: 15px; color: var(--pr-muted); }
+
+/* ---------- STICKY TABS ---------- */
+.process-tabs-wrap {
+  position: sticky;
+  top: var(--pr-sticky-top);
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  pointer-events: none;
+}
+.process-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  pointer-events: auto;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.process-tabs::-webkit-scrollbar { display: none; }
+
+.process-tab {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  background: var(--pr-green-light);
+  color: var(--pr-green);
+  font: 600 16px "DM Sans", sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.35s ease, color 0.35s ease, transform 0.35s ease;
+}
+.process-tab:hover { transform: translateY(-1px); }
+.process-tab.is-active { background: var(--pr-green); color: #fff; }
+
+.process-tab:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 6px solid var(--pr-green);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+/* ---------- TIMELINE ---------- */
+.process-timeline {
+  position: relative;
+  padding-left: 80px;
+}
+
+.process-line,
+.process-line-fill {
+  position: absolute;
+  left: 19px;
+  top: 20px;
+  width: 3px;
+  border-radius: 3px;
+}
+.process-line { bottom: 20px; background: var(--pr-green-light); }
+.process-line-fill {
+  height: 0;
+  background: var(--pr-green);
+  will-change: height;
+}
+
+.process-step {
+  position: relative;
+  margin-bottom: 36px;
+  scroll-margin-top: calc(var(--pr-sticky-top) + 90px);
+}
+.process-step:last-child { margin-bottom: 0; }
+
+.process-dot {
+  position: absolute;
+  left: -80px;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--pr-green-light);
+  color: var(--pr-green);
+  font-weight: 700;
+  font-size: 15px;
+  transition: background 0.4s ease, color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+}
+.process-step.is-reached .process-dot {
+  background: var(--pr-green);
+  color: #fff;
+  box-shadow: 0 0 0 5px rgba(38, 128, 79, 0.15);
+}
+.process-step.is-current .process-dot { transform: scale(1.1); }
+
+.process-card {
+  position: relative;
+  padding: 26px 28px;
+  border-radius: 20px;
+  background: var(--pr-card);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+.process-card::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 14px;
+  border-right: 16px solid var(--pr-card);
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+}
+.process-step.is-current .process-card {
+  box-shadow: 0 10px 28px rgba(38, 128, 79, 0.16);
+  transform: translateX(4px);
+}
+.process-card h3 { margin: 0 0 12px; font-size: 21px; font-weight: 700; }
+.process-card p { margin: 0; font-size: 15px; line-height: 1.7; color: #2f3b42; }
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 700px) {
+  .process-section {
+    --pr-sticky-top: 75px;   /* mobile header ki height */
+    padding: 28px 14px 60px;
+  }
+  .process-tabs { gap: 4px; padding: 6px; }
+  .process-tab { padding: 10px 14px; font-size: 13px; }
+  .process-tab:not(:last-child)::after { display: none; }
+  .process-timeline { padding-left: 54px; }
+  .process-line,
+  .process-line-fill { left: 13px; }
+  .process-dot { left: -54px; width: 28px; height: 28px; font-size: 12px; }
+  .process-card { padding: 20px 18px; }
+  .process-card h3 { font-size: 18px; }
+  .process-card p { font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process-section * { transition: none !important; }
+}

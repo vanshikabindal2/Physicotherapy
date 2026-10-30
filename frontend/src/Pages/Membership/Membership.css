@@ -1,0 +1,459 @@
+
+
+.membership-section {
+  position: relative;
+  min-height: 100vh;
+  padding: 75px 24px 35px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: "DM Sans", sans-serif;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.membership-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* background: rgba(239, 246, 239, 0.80); */
+  backdrop-filter: blur(2px);
+}
+
+.membership-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.membership-heading {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 48px;
+}
+
+.membership-subtitle {
+  display: inline-block;
+  color: #52796f;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  margin-bottom: 15px;
+}
+
+.membership-heading h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(32px, 4vw, 48px);
+  color: #173c3a;
+  margin: 0 0 15px;
+  line-height: 1.2;
+}
+
+.membership-heading p {
+  color: #62756e;
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* THREE CARD LAYOUT */
+
+.membership-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 25px;
+}
+
+/* COMMON CARD DESIGN */
+
+.membership-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 38px 25px 27px;
+  border: 1px solid;
+  border-radius: 24px;
+  box-shadow: 0 15px 40px rgba(32, 45, 45, 0.12);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  overflow: visible;
+}
+
+.membership-card:hover {
+  transform: translateY(-9px);
+  box-shadow: 0 23px 45px rgba(32, 45, 45, 0.18);
+}
+
+/* SILVER CARD */
+
+.silver-card {
+  background: linear-gradient(
+    145deg,
+    #ffffff 0%,
+    #eef1f4 38%,
+    #dce2e8 70%,
+    #f9fafb 100%
+  );
+  border-color: #c0c9d1;
+  border-top: 5px solid #8997a5;
+  box-shadow: 0 15px 40px rgba(95, 109, 124, 0.16);
+}
+
+.silver-card .plan-icon {
+  background: linear-gradient(145deg, #ffffff, #cbd3dc);
+  color: #697887;
+  border: 1px solid #c0c9d1;
+  box-shadow: 0 5px 15px rgba(87, 102, 117, 0.12);
+}
+
+.silver-card h2,
+.silver-card .plan-price {
+  color: #485563;
+}
+
+.silver-card .discount-badge {
+  background: linear-gradient(135deg, #647382, #aab5c0);
+  color: #ffffff;
+}
+
+.silver-card .check-icon {
+  background: #dce3e9;
+  color: #536779;
+}
+
+.silver-card .plan-button {
+  background: linear-gradient(135deg, #647382, #465461);
+  color: #ffffff;
+  border-color: #647382;
+}
+
+.silver-card .plan-button:hover {
+  background: #35434f;
+}
+
+/* DIAMOND CARD */
+
+.diamond-card {
+  background: linear-gradient(
+    145deg,
+    #ffffff 0%,
+    #e4faf7 35%,
+    #c3eeea 70%,
+    #f4fffe 100%
+  );
+  border-color: #91d4ce;
+  border-top: 5px solid #36a49b;
+  box-shadow: 0 17px 45px rgba(38, 145, 136, 0.17);
+}
+
+.diamond-card .plan-icon {
+  background: linear-gradient(145deg, #e5fffc, #8bd8d0);
+  color: #167e77;
+  border: 1px solid #8fd3cc;
+  box-shadow: 0 5px 16px rgba(38, 145, 136, 0.15);
+}
+
+.diamond-card h2,
+.diamond-card .plan-price {
+  color: #126e68;
+}
+
+.diamond-card .discount-badge {
+  background: linear-gradient(135deg, #168c83, #43bcb0);
+  color: #ffffff;
+}
+
+.diamond-card .check-icon {
+  background: #c5eee8;
+  color: #16877e;
+}
+
+.diamond-card .plan-button {
+  background: linear-gradient(135deg, #239d94, #116d67);
+  color: #ffffff;
+  border-color: #239d94;
+  box-shadow: 0 5px 15px rgba(35, 157, 148, 0.17);
+}
+
+.diamond-card .plan-button:hover {
+  background: #105c57;
+}
+
+/* GOLD CARD */
+
+.gold-card {
+  background: linear-gradient(
+    145deg,
+    #fffdf6 0%,
+    #fff1cc 35%,
+    #f5d98c 70%,
+    #fffaf0 100%
+  );
+  border-color: #e6c66d;
+  border-top: 5px solid #c69a35;
+  box-shadow: 0 17px 45px rgba(177, 132, 39, 0.18);
+}
+
+.gold-card .plan-icon {
+  background: linear-gradient(145deg, #fff7df, #e9c46a);
+  color: #9a6b0d;
+  border: 1px solid #e2c16b;
+  box-shadow: 0 5px 16px rgba(177, 132, 39, 0.16);
+}
+
+.gold-card h2,
+.gold-card .plan-price {
+  color: #94630b;
+}
+
+.gold-card .discount-badge {
+  background: linear-gradient(135deg, #a8750c, #dfb54e);
+  color: #ffffff;
+}
+
+.gold-card .check-icon {
+  background: #f8e6ad;
+  color: #95670f;
+}
+
+.gold-card .plan-button {
+  background: linear-gradient(135deg, #c59a35, #94680e);
+  color: #ffffff;
+  border-color: #c59a35;
+  box-shadow: 0 5px 15px rgba(177, 132, 39, 0.17);
+}
+
+.gold-card .plan-button:hover {
+  background: #815909;
+}
+
+/* DISCOUNT BADGES */
+
+.discount-badge {
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+}
+
+/* MOST POPULAR BADGE */
+
+.popular-badge {
+  position: absolute;
+  top: -17px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  background: #167e77;
+  color: #ffffff;
+  border-radius: 30px;
+  padding: 9px 16px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 5px 15px rgba(22, 126, 119, 0.24);
+}
+
+/* DURATION */
+
+.plan-duration {
+  color: #687872;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+/* ICON */
+
+.plan-icon {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+
+/* TITLES */
+
+.membership-card h2 {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: 31px;
+}
+
+.membership-card h3 {
+  color: #687872;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 5px 0 12px;
+}
+
+/* DESCRIPTION */
+
+.plan-description {
+  min-height: 24px;
+  margin: 0 0 20px;
+  color: #687872;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* PRICE */
+
+.plan-price {
+  font-family: "Playfair Display", serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.price-note {
+  color: #687872;
+  font-size: 12px;
+  margin: 7px 0 22px;
+}
+
+/* DIVIDER */
+
+.plan-divider {
+  height: 1px;
+  background: rgba(115, 130, 125, 0.23);
+  margin-bottom: 23px;
+}
+
+/* FEATURES */
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 1;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #52665e;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.check-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  font-size: 9px;
+  margin-top: 1px;
+}
+
+/* BUTTONS */
+
+.plan-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 12px;
+  border: 1px solid;
+  border-radius: 12px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.plan-button:hover {
+  transform: translateY(-2px);
+}
+
+/* FOOTER */
+
+.membership-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 40px;
+  color: #57756a;
+}
+
+.membership-footer span {
+  font-size: 24px;
+}
+
+.membership-footer p {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .membership-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+  }
+
+  .gold-card {
+    grid-column: 1 / -1;
+    width: calc(50% - 13px);
+    justify-self: center;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .membership-section {
+    padding: 55px 18px 30px;
+  }
+
+  .membership-heading {
+    margin-bottom: 38px;
+  }
+
+  .membership-heading h1 {
+    font-size: 34px;
+  }
+
+  .membership-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .membership-card {
+    padding: 35px 24px 25px;
+  }
+
+  .gold-card {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .membership-footer p {
+    line-height: 1.8;
+    letter-spacing: 1px;
+  }
+}

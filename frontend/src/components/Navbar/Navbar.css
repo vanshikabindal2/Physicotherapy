@@ -1,0 +1,465 @@
+
+
+/* ---------- Colors: apni brand ke hisaab se yahan change karo ---------- */
+.physio-header {
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --nav-text: #1f3a3d;
+  --nav-accent: #0f9d8a;
+  --nav-accent-dark: #0b7a6b;
+  --nav-accent-light: #5eead4;
+  --progress: 0;
+
+  /* Layered shadow: bahut halki → scroll par gehri aur lambi */
+  --shadow-rest:
+    0 1px 0 rgba(15, 157, 138, 0.08),
+    0 10px 24px -14px rgba(15, 80, 75, 0.18);
+  --shadow-scrolled:
+    0 2px 4px rgba(15, 80, 75, 0.05),
+    0 10px 20px -8px rgba(15, 80, 75, 0.14),
+    0 24px 48px -20px rgba(15, 157, 138, 0.35);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: var(--shadow-rest);
+  transition: box-shadow 0.5s var(--ease);
+  animation: headerDrop 0.8s var(--ease) backwards;
+}
+
+.physio-header.scrolled {
+  box-shadow: var(--shadow-scrolled);
+}
+
+/* Blur background alag layer me, taaki mobile ka fixed menu sahi chale */
+.physio-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--nav-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+@keyframes headerDrop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* ---------- Neeche ki border (gradient + flow + scroll progress) ---------- */
+.physio-border {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  overflow: hidden;
+  pointer-events: none;
+  /* base line: beech me teal, kinaaron par fade */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(15, 157, 138, 0.28) 15%,
+    rgba(15, 157, 138, 0.28) 85%,
+    transparent 100%
+  );
+  opacity: 0.8;
+  transition: opacity 0.4s var(--ease), height 0.4s var(--ease);
+}
+
+.physio-header.scrolled .physio-border {
+  opacity: 1;
+  height: 4px;
+}
+
+/* Chamakti hui light jo border par chalti rehti hai */
+.physio-border::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--nav-accent-light),
+    transparent
+  );
+  animation: borderFlow 5s linear infinite;
+}
+
+@keyframes borderFlow {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(460%);
+  }
+}
+
+/* Scroll progress: page scroll ke saath border bharti hai */
+.physio-border::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: calc(var(--progress) * 1%);
+  background: linear-gradient(
+    90deg,
+    var(--nav-accent-dark),
+    var(--nav-accent),
+    var(--nav-accent-light)
+  );
+  border-radius: 0 4px 4px 0;
+  box-shadow: 0 0 10px rgba(94, 234, 212, 0.9);
+  transition: width 0.12s linear;
+}
+
+/* ---------- Navbar ---------- */
+.physio-navbar {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: padding 0.4s var(--ease);
+}
+
+.physio-header.scrolled .physio-navbar {
+  padding: 8px 24px;
+}
+
+/* ---------- Logo ---------- */
+.physio-logo img {
+  height: 56px;
+  width: auto;
+  display: block;
+  transition: height 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.physio-header.scrolled .physio-logo img {
+  height: 44px;
+}
+
+.physio-logo:hover img {
+  transform: scale(1.06) rotate(-2deg);
+}
+
+/* ---------- Desktop links ---------- */
+.physio-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.physio-link {
+  position: relative;
+  padding: 6px 0;
+  color: var(--nav-text);
+  font-weight: 500;
+  font-size: 15px;
+  text-decoration: none;
+  transition: color 0.3s var(--ease);
+  /* load par ek ek karke aate hain */
+  animation: linkIn 0.7s var(--ease) both;
+  animation-delay: calc(0.25s + var(--i) * 0.08s);
+}
+
+@keyframes linkIn {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Underline: left se grow hota hai, right se jaata hai */
+.physio-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--nav-accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease);
+}
+
+.physio-link:hover,
+.physio-link.active {
+  color: var(--nav-accent);
+}
+
+.physio-link:hover::after,
+.physio-link.active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---------- Appointment button ---------- */
+.physio-appointment-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--nav-accent), var(--nav-accent-dark));
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(15, 157, 138, 0.35);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  animation:
+    linkIn 0.7s var(--ease) both,
+    btnPulse 2.8s ease-out 1.6s infinite;
+  animation-delay: calc(0.25s + var(--i) * 0.08s), 1.6s;
+}
+
+/* Shine sweep */
+.physio-appointment-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+  transform: skewX(-20deg);
+}
+
+.physio-appointment-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px rgba(15, 157, 138, 0.45);
+}
+
+.physio-appointment-btn:hover::before {
+  animation: shine 0.9s var(--ease);
+}
+
+.physio-appointment-btn:active {
+  transform: translateY(-1px) scale(0.97);
+}
+
+@keyframes shine {
+  to {
+    left: 130%;
+  }
+}
+
+/* Arrow button ke andar */
+.physio-appointment-btn .arrow {
+  display: inline-block;
+  transition: transform 0.35s var(--ease);
+}
+
+.physio-appointment-btn:hover .arrow {
+  transform: translate(3px, -3px) rotate(10deg);
+}
+
+/* Halka pulse ring jo dhyaan kheenchta hai */
+@keyframes btnPulse {
+  0% {
+    box-shadow: 0 6px 18px rgba(15, 157, 138, 0.35), 0 0 0 0 rgba(15, 157, 138, 0.45);
+  }
+  70%,
+  100% {
+    box-shadow: 0 6px 18px rgba(15, 157, 138, 0.35), 0 0 0 16px rgba(15, 157, 138, 0);
+  }
+}
+
+/* ---------- Hamburger (mobile) ---------- */
+.physio-menu-toggle {
+  display: none;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  background: rgba(15, 157, 138, 0.1);
+  cursor: pointer;
+  z-index: 1002;
+  transition: background 0.3s var(--ease);
+}
+
+.physio-menu-toggle:hover {
+  background: rgba(15, 157, 138, 0.2);
+}
+
+.physio-menu-toggle span {
+  position: absolute;
+  left: 11px;
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--nav-text);
+  transition: transform 0.45s var(--ease), opacity 0.25s ease, top 0.45s var(--ease);
+}
+
+.physio-menu-toggle span:nth-child(1) { top: 14px; }
+.physio-menu-toggle span:nth-child(2) { top: 21px; }
+.physio-menu-toggle span:nth-child(3) { top: 28px; }
+
+/* ☰ → ✕ morph */
+.physio-menu-toggle.open span:nth-child(1) {
+  top: 21px;
+  transform: rotate(45deg);
+}
+.physio-menu-toggle.open span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+.physio-menu-toggle.open span:nth-child(3) {
+  top: 21px;
+  transform: rotate(-45deg);
+}
+
+/* ---------- Mobile ---------- */
+/* Chhote laptop / tablet: links ko tight rakho taaki wrap na ho */
+@media (max-width: 1180px) and (min-width: 993px) {
+  .physio-nav-links {
+    gap: 20px;
+  }
+  .physio-link,
+  .physio-appointment-btn {
+    font-size: 14px;
+  }
+  .physio-appointment-btn {
+    padding: 10px 18px;
+  }
+}
+
+@media (max-width: 992px) {
+  .physio-navbar,
+  .physio-header.scrolled .physio-navbar {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .physio-navbar {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .physio-logo img {
+    height: 46px;
+  }
+
+  .physio-header.scrolled .physio-logo img {
+    height: 40px;
+  }
+
+  .physio-menu-toggle {
+    display: block;
+  }
+
+  .physio-nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: safe center;
+    align-items: center;
+    gap: 22px;
+    padding: calc(90px + env(safe-area-inset-top, 0px)) 24px
+      calc(40px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 1001;
+
+    /* circle reveal: top-right (hamburger) se phailta hai */
+    clip-path: circle(0% at calc(100% - 46px) 40px);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      clip-path 0.7s var(--ease),
+      visibility 0s linear 0.7s;
+  }
+
+  .physio-nav-links.active {
+    clip-path: circle(150% at calc(100% - 46px) 40px);
+    visibility: visible;
+    pointer-events: auto;
+    transition: clip-path 0.8s var(--ease), visibility 0s;
+  }
+
+  .physio-link,
+  .physio-appointment-btn {
+    animation: none;
+    font-size: 22px;
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.5s var(--ease),
+      transform 0.5s var(--ease),
+      color 0.3s var(--ease),
+      box-shadow 0.35s var(--ease);
+  }
+
+  .physio-appointment-btn {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+
+  /* Menu khulne par links stagger me upar aate hain */
+  .physio-nav-links.active .physio-link,
+  .physio-nav-links.active .physio-appointment-btn {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(0.2s + var(--i) * 0.07s);
+  }
+}
+
+/* ---------- Accessibility ---------- */
+.physio-link:focus-visible,
+.physio-appointment-btn:focus-visible,
+.physio-menu-toggle:focus-visible,
+.physio-logo:focus-visible {
+  outline: 3px solid var(--nav-accent);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .physio-header,
+  .physio-header *,
+  .physio-header *::before,
+  .physio-header *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;600&family=Caveat&display=swap");
+
+:root {
+  --hero-bg: #285450;
+  --hero-mint: #c9efc8;
+  --hero-btn: #bfe0bd;
+}
+
+.hero {
+  box-sizing: border-box;
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  padding: 48px 6vw;
+  color: #fff;
+  font-family: Inter, Arial, sans-serif;
+  overflow: hidden;
+
+  /* background image */
+  background-color: var(--hero-bg);
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: auto 100%;
+}
+
+.hero *,
+.hero *::before,
+.hero *::after {
+  box-sizing: border-box;
+}
+
+.hero__text {
+  max-width: 560px;
+}
+
+.hero__eyebrow {
+  letter-spacing: 0.35em;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.hero__eyebrow::after {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 2px;
+  background: var(--hero-mint);
+  margin-top: 12px;
+}
+
+.hero__title {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(44px, 6vw, 84px);
+  line-height: 1.05;
+  margin: 24px 0;
+}
+
+.hero__title span {
+  display: block;
+  color: var(--hero-mint);
+}
+
+.hero__desc {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0 0 30px;
+}
+
+.hero__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--hero-btn);
+  color: var(--hero-bg);
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  padding: 18px 28px;
+  border-radius: 999px;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+.hero__btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.hero__tag {
+  position: absolute;
+  right: 3vw;
+  bottom: 60px;
+  font-family: Caveat, cursive;
+  font-size: 24px;
+  line-height: 1.2;
+  text-align: right;
+  transform: rotate(-8deg);
+}
+
+.hero__tag::after {
+  content: "";
+  display: block;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  margin-top: 6px;
+  transform: rotate(-2deg);
+}
+
+/* Mobile: text on top, photo at the bottom */
+@media (max-width: 760px) {
+  .hero {
+    align-items: flex-start;
+    padding: 36px 24px 300px;
+    background-size: auto 280px;
+    background-position: right bottom;
+  }
+  .hero__tag {
+    display: none;
+  }
+}

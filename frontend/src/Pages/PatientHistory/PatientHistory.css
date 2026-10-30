@@ -1,0 +1,430 @@
+
+.patient-history-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 6%;
+  overflow: hidden;
+
+  /* Apni existing background image ka path yahan do */
+  background-image: url("../../assets/patient.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  font-family: "Inter", "Segoe UI", sans-serif;
+  box-sizing: border-box;
+}
+
+.patient-history-page *,
+.patient-history-page *::before,
+.patient-history-page *::after {
+  box-sizing: border-box;
+}
+
+.patient-history-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(241, 249, 247, 0.94) 0%,
+    rgba(241, 249, 247, 0.82) 43%,
+    rgba(235, 247, 245, 0.60) 100%
+  );
+  z-index: 0;
+}
+
+.patient-history-layout {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1320px;
+  display: grid;
+  grid-template-columns: 1fr 0.92fr;
+  align-items: center;
+  gap: 75px;
+}
+
+/* LEFT CONTENT */
+
+.patient-history-intro {
+  max-width: 570px;
+}
+
+.patient-eyebrow,
+.form-eyebrow {
+  display: inline-block;
+  color: #16877f;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+
+.patient-history-intro h1 {
+  font-size: clamp(42px, 4.5vw, 66px);
+  line-height: 1.12;
+  letter-spacing: -2px;
+  color: #203542;
+  font-weight: 800;
+  margin: 0 0 24px;
+}
+
+.patient-history-intro h1 span {
+  color: #16877f;
+}
+
+.patient-description {
+  font-size: 17px;
+  line-height: 1.9;
+  color: #586c79;
+  max-width: 490px;
+  margin: 0 0 35px;
+}
+
+.patient-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.patient-benefit {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.benefit-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  color: #147e77;
+  background: rgba(22, 135, 127, 0.12);
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.patient-benefit h3 {
+  margin: 0 0 5px;
+  font-size: 15px;
+  color: #263e4b;
+  font-weight: 700;
+}
+
+.patient-benefit p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #657783;
+}
+
+/* FORM CARD */
+
+.patient-form-card {
+  width: 100%;
+  max-width: 530px;
+  justify-self: end;
+  padding: 42px 38px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+
+  background: rgba(255, 255, 255, 0.91);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 25px 70px rgba(28, 68, 72, 0.13),
+    0 4px 14px rgba(28, 68, 72, 0.05);
+}
+
+.patient-form-icon {
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 17px;
+  background: #e5f5f1;
+  color: #16877f;
+  font-size: 30px;
+  margin-bottom: 25px;
+}
+
+.patient-form-card .form-eyebrow {
+  margin-bottom: 10px;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+}
+
+.patient-form-card h2 {
+  margin: 0 0 12px;
+  font-size: 31px;
+  line-height: 1.25;
+  letter-spacing: -0.7px;
+  color: #203542;
+  font-weight: 800;
+}
+
+.form-description {
+  margin: 0 0 30px;
+  color: #6b7c87;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.patient-form-card form label {
+  display: block;
+  margin-bottom: 11px;
+  font-size: 13px;
+  color: #304653;
+  font-weight: 700;
+}
+
+.patient-phone-field {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 57px;
+  border: 1px solid #d9e3e7;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.patient-phone-field:focus-within {
+  border-color: #16877f;
+  box-shadow: 0 0 0 4px rgba(22, 135, 127, 0.10);
+}
+
+.country-code {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 17px;
+  color: #365563;
+  background: #f4f8f8;
+  border-right: 1px solid #e1e9eb;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.patient-phone-field input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 15px;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: #243c49;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.patient-phone-field input::placeholder {
+  color: #a1adb5;
+}
+
+.patient-submit-btn {
+  width: 100%;
+  min-height: 56px;
+  margin-top: 20px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #188f88, #08766f);
+  color: #fff;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.patient-submit-btn span {
+  font-size: 21px;
+  transition: transform 0.25s;
+}
+
+.patient-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(12, 126, 118, 0.24);
+}
+
+.patient-submit-btn:hover span {
+  transform: translateX(4px);
+}
+
+.patient-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.patient-status-message {
+  color: #27665e;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 14px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.patient-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 26px;
+  padding: 17px 0;
+  border-bottom: 1px solid #edf1f2;
+}
+
+.privacy-lock {
+  color: #16877f;
+  font-size: 19px;
+}
+
+.patient-privacy p {
+  margin: 0;
+  color: #778892;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.patient-card-footer {
+  margin-top: 18px;
+  text-align: center;
+  color: #829099;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* TABLET */
+
+@media (max-width: 1000px) {
+  .patient-history-page {
+    padding: 55px 5%;
+  }
+
+  .patient-history-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+  }
+
+  .patient-history-intro h1 {
+    font-size: 43px;
+  }
+
+  .patient-form-card {
+    padding: 32px 25px 24px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  .patient-history-page {
+    min-height: 100vh;
+    padding: 55px 20px;
+    background-position: center;
+  }
+
+  .patient-history-overlay {
+    background: rgba(242, 249, 247, 0.88);
+  }
+
+  .patient-history-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    max-width: 480px;
+  }
+
+  .patient-history-intro {
+    max-width: 100%;
+  }
+
+  .patient-eyebrow {
+    margin-bottom: 14px;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+  }
+
+  .patient-history-intro h1 {
+    font-size: clamp(37px, 9vw, 49px);
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+
+  .patient-description {
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 23px;
+  }
+
+  .patient-benefits {
+    gap: 16px;
+  }
+
+  .patient-benefit {
+    gap: 12px;
+  }
+
+  .benefit-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 13px;
+    font-size: 20px;
+  }
+
+  .patient-benefit h3 {
+    font-size: 14px;
+  }
+
+  .patient-benefit p {
+    font-size: 12px;
+  }
+
+  .patient-form-card {
+    max-width: 100%;
+    padding: 28px 22px 22px;
+    border-radius: 20px;
+  }
+
+  .patient-form-icon {
+    width: 47px;
+    height: 47px;
+    margin-bottom: 20px;
+  }
+
+  .patient-form-card h2 {
+    font-size: 27px;
+  }
+
+  .form-description {
+    font-size: 13px;
+    margin-bottom: 25px;
+  }
+
+  .patient-phone-field {
+    height: 53px;
+  }
+
+  .patient-submit-btn {
+    min-height: 53px;
+    font-size: 14px;
+  }
+}
