@@ -1,401 +1,545 @@
-
 require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const multer = require("multer");
-const fs = require("fs");
-const path = require("path");
-const crypto = require("crypto");
 
 const Patient = require("./models/Patient");
+const cloudinary = require("./config/cloudinary");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // =====================================
-// MIDDLEWARE
+// CORS MIDDLEWARE
 // =====================================
 
 app.use(
   cors({
-    origin: [
-      process.env.FRONTEND_URL || "http://localhost:5174",
-      "http://localhost:5173",
+    origin: (origin, callback) => {
+      console.log("Frontend Origin:", origin);
+
+      // Allow localhost on any port during development
+      if (
+        !origin ||
+        /^http:\/\/localhost:\d+$/.test(origin) ||
+        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
+
+      // Allow configured production frontend
+      if (origin === process.env.FRONTEND_URL) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS blocked: " + origin));
+    },
+
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "OPTIONS",
     ],
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+    ],
   })
 );
 
-app.use(express.json({ limit: "1mb" }));
-
 // =====================================
-// PRIVATE PDF DIRECTORY
+// BODY PARSER
 // =====================================
 
-const reportsDirectory = path.join(__dirname, "private-reports");
-
-fs.mkdirSync(reportsDirectory, { recursive: true });
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // =====================================
-// MULTER PDF UPLOAD CONFIGURATION
+// MONGODB CONNECTION
 // =====================================
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, reportsDirectory);
-  },
+let dbConnectionPromise = null;
 
-  filename: (req, file, cb) => {
-    cb(null, `${crypto.randomUUID()}.pdf`);
-  },
+async function connectDB() {
+  if (mongoose.connection.readyState === 1) {
+    return;
+  }
+
+  if (!process.env.MONGO_URI) {
+    throw new Error("MONGO_URI is missing in .env file");
+  }
+
+  if (!dbConnectionPromise) {
+    dbConnectionPromise = mongoose
+      .connect(process.env.MONGO_URI)
+      .then(() => {
+        console.log("MongoDB connected successfully");
+      })
+      .catch((error) => {
+        dbConnectionPromise = null;
+
+        console.error(
+          "MongoDB connection error:",
+          error.message
+        );
+
+        throw error;
+      });
+  }
+
+  return dbConnectionPromise;
+}
+
+// =====================================
+// DATABASE MIDDLEWARE
+// =====================================
+
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Database connection failed",
+    });
+  }
 });
+
+// =====================================
+// MULTER MEMORY STORAGE
+// =====================================
+
+const storage = multer.memoryStorage();
+
+const fileFilter = (req, file, cb) => {
+  const isPDF =
+    file.mimetype === "application/pdf" &&
+    file.originalname.toLowerCase().endsWith(".pdf");
+
+  if (!isPDF) {
+    return cb(
+      new Error("Only PDF files are allowed")
+    );
+  }
+
+  cb(null, true);
+};
 
 const upload = multer({
   storage,
+  fileFilter,
   limits: {
     fileSize: 5 * 1024 * 1024,
     files: 10,
   },
-
-  fileFilter: (req, file, cb) => {
-    const isPdf =
-      file.mimetype === "application/pdf" &&
-      path.extname(file.originalname).toLowerCase() === ".pdf";
-
-    if (!isPdf) {
-      return cb(new Error("Only PDF files are allowed."));
-    }
-
-    cb(null, true);
-  },
 });
 
 // =====================================
-// DELETE FILES IF REGISTRATION FAILS
+// CLOUDINARY PDF UPLOAD
 // =====================================
 
-function deleteUploadedFiles(files) {
-  if (!files) return;
+function uploadPDFToCloudinary(file) {
+  return new Promise((resolve, reject) => {
+    const uploadStream =
+      cloudinary.uploader.upload_stream(
+        {
+          resource_type: "raw",
+          folder: "physiotherapy-reports",
+          format: "pdf",
+        },
+        (error, result) => {
+          if (error) {
+            console.error(
+              "Cloudinary upload error:"
+            );
 
-  for (const file of files) {
-    if (file.path && fs.existsSync(file.path)) {
-      try {
-        fs.unlinkSync(file.path);
-      } catch (error) {
-        console.error("Unable to delete uploaded file:", error);
+            console.dir(error, { depth: 10 });
+
+            return reject(error);
+          }
+
+          console.log(
+            "Cloudinary PDF upload successful:",
+            result.public_id
+          );
+
+          resolve({
+            originalName: file.originalname,
+            publicId: result.public_id,
+            resourceType: result.resource_type,
+            format: result.format,
+            size: file.size,
+            uploadedAt: new Date(),
+          });
+        }
+      );
+
+    uploadStream.end(file.buffer);
+  });
+}
+
+// =====================================
+// DELETE CLOUDINARY REPORTS
+// =====================================
+
+async function deleteCloudinaryReports(reports) {
+  for (const report of reports) {
+    try {
+      if (report.publicId) {
+        await cloudinary.uploader.destroy(
+          report.publicId,
+          {
+            resource_type:
+              report.resourceType || "raw",
+            type: "upload",
+          }
+        );
+
+        console.log(
+          "Deleted Cloudinary file:",
+          report.publicId
+        );
       }
+    } catch (error) {
+      console.error(
+        "Cloudinary cleanup error:",
+        error.message
+      );
     }
   }
 }
 
 // =====================================
-// SERVER HEALTH CHECK
+// HOME ROUTE
 // =====================================
 
 app.get("/", (req, res) => {
-  res.status(200).send("Physiotherapy backend is running.");
+  res.status(200).json({
+    success: true,
+    message: "Physiotherapy API is running",
+  });
 });
 
 // =====================================
-// REGISTER PATIENT + UPLOAD PDF REPORTS
+// CLOUDINARY CONNECTION TEST
+// =====================================
+
+app.get("/upload-direct-test", async (req, res) => {
+  try {
+    const result = await cloudinary.uploader.upload(
+      "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
+      {
+        resource_type: "image",
+      }
+    );
+
+    return res.json({
+      success: true,
+      message: "Cloudinary connection successful",
+      publicId: result.public_id,
+    });
+  } catch (error) {
+    console.error("Cloudinary test error:");
+    console.dir(error, { depth: 10 });
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      http_code: error.http_code,
+      name: error.name,
+    });
+  }
+});
+
+// =====================================
+// ADD PATIENT + UPLOAD REPORTS
 // =====================================
 
 app.post(
   "/api/patients",
   upload.array("reports", 10),
   async (req, res) => {
-    const files = req.files || [];
+    const uploadedReports = [];
 
     try {
-      const { name, phone, age, gender, problem } = req.body;
+      const {
+        name,
+        phone,
+        age,
+        gender,
+        problem,
+      } = req.body;
+
+      const files = req.files || [];
+
+      console.log(
+        "\n========== NEW PATIENT REQUEST =========="
+      );
+
+      console.log("Files received:", files.length);
+
+      // Validate patient details
 
       if (
-        !name?.trim() ||
+        !name ||
         !phone ||
         !age ||
         !gender ||
-        !problem?.trim()
+        !problem
       ) {
-        deleteUploadedFiles(files);
-
         return res.status(400).json({
           success: false,
-          message: "Please fill in all patient details.",
+          message: "Please fill all patient details",
         });
       }
 
-      if (!/^[6-9]\d{9}$/.test(phone)) {
-        deleteUploadedFiles(files);
-
+      if (!/^[6-9][0-9]{9}$/.test(phone.trim())) {
         return res.status(400).json({
           success: false,
-          message: "Enter a valid 10-digit mobile number.",
-        });
-      }
-
-      const patientAge = Number(age);
-
-      if (
-        !Number.isInteger(patientAge) ||
-        patientAge < 1 ||
-        patientAge > 120
-      ) {
-        deleteUploadedFiles(files);
-
-        return res.status(400).json({
-          success: false,
-          message: "Enter a valid patient age.",
-        });
-      }
-
-      if (!["Male", "Female", "Other"].includes(gender)) {
-        deleteUploadedFiles(files);
-
-        return res.status(400).json({
-          success: false,
-          message: "Select a valid gender.",
+          message:
+            "Please enter a valid 10-digit mobile number",
         });
       }
 
       if (files.length === 0) {
         return res.status(400).json({
           success: false,
-          message: "Please upload at least one PDF report.",
+          message:
+            "Please upload at least one PDF report",
         });
       }
 
-      const reports = files.map((file) => ({
-        originalName: path.basename(file.originalname),
-        filename: file.filename,
-        size: file.size,
-        uploadedAt: new Date(),
-      }));
+      // Upload PDFs to Cloudinary
 
-      const patient = await Patient.create({
+      for (const file of files) {
+        console.log(
+          "Uploading:",
+          file.originalname
+        );
+
+        const uploadedFile =
+          await uploadPDFToCloudinary(file);
+
+        uploadedReports.push(uploadedFile);
+      }
+
+      // Save patient in MongoDB
+
+      const patient = new Patient({
         name: name.trim(),
-        phone,
-        age: patientAge,
+        phone: phone.trim(),
+        age: Number(age),
         gender,
-        problem: problem.trim(),
-        reports,
+        problem,
+        reports: uploadedReports,
       });
+
+      await patient.save();
+
+      console.log(
+        "Patient saved successfully:",
+        patient._id
+      );
 
       return res.status(201).json({
         success: true,
-        message: "Patient details and reports saved successfully.",
-        patient: {
-          id: patient._id.toString(),
-          name: patient.name,
-          phone: patient.phone,
-          reportsCount: patient.reports.length,
-        },
+        message:
+          "Patient and reports saved successfully",
+        patient,
       });
     } catch (error) {
-      deleteUploadedFiles(files);
+      console.error(
+        "PATIENT SAVE ERROR:",
+        error.message
+      );
 
-      console.error("Patient registration error:", error);
-
-      if (error.name === "ValidationError") {
-        return res.status(400).json({
-          success: false,
-          message: error.message,
-        });
-      }
+      await deleteCloudinaryReports(
+        uploadedReports
+      );
 
       return res.status(500).json({
         success: false,
-        message: "Unable to save patient details.",
+        message:
+          error.message || "Unable to save patient",
       });
     }
   }
 );
 
 // =====================================
-// FIND PATIENT HISTORY USING PHONE
+// PATIENT HISTORY BY PHONE NUMBER
 // =====================================
 
-app.post("/api/patients/history", async (req, res) => {
-  try {
-    const { phone } = req.body;
+app.post(
+  "/api/patients/history",
+  async (req, res) => {
+    try {
+      const { phone } = req.body;
 
-    if (!phone || !/^[6-9]\d{9}$/.test(phone)) {
-      return res.status(400).json({
+      if (
+        !phone ||
+        !/^[6-9][0-9]{9}$/.test(phone.trim())
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Please enter a valid 10-digit mobile number",
+        });
+      }
+
+      console.log(
+        "Patient history requested for:",
+        phone
+      );
+
+      const patient = await Patient.findOne({
+        phone: phone.trim(),
+      });
+
+      if (!patient) {
+        return res.status(404).json({
+          success: false,
+          message: "No patient record found",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "Patient history found",
+        patient,
+      });
+    } catch (error) {
+      console.error(
+        "Patient history error:",
+        error.message
+      );
+
+      return res.status(500).json({
         success: false,
-        message: "Please enter a valid 10-digit mobile number.",
+        message:
+          "Unable to fetch patient history",
       });
     }
-
-    const patient = await Patient.findOne({ phone });
-
-    if (!patient) {
-      return res.status(404).json({
-        success: false,
-        message: "No patient records found for this number.",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      patient: {
-        id: patient._id.toString(),
-        name: patient.name,
-        phone: patient.phone,
-        age: patient.age,
-        gender: patient.gender,
-        problem: patient.problem,
-
-        reports: patient.reports.map((report) => ({
-          id: report._id.toString(),
-          originalName: report.originalName,
-          size: report.size,
-          uploadedAt: report.uploadedAt,
-        })),
-      },
-    });
-  } catch (error) {
-    console.error("Patient history error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Unable to retrieve patient history.",
-    });
   }
-});
+);
 
 // =====================================
-// OPEN PATIENT PDF REPORT
+// VIEW / DOWNLOAD PATIENT PDF REPORT
 // =====================================
 
 app.get(
   "/api/patients/report/:patientId/:reportId",
   async (req, res) => {
     try {
-      const { patientId, reportId } = req.params;
+      const {
+        patientId,
+        reportId,
+      } = req.params;
 
       if (
-        !/^[a-f\d]{24}$/i.test(patientId) ||
-        !/^[a-f\d]{24}$/i.test(reportId)
+        !mongoose.Types.ObjectId.isValid(patientId) ||
+        !mongoose.Types.ObjectId.isValid(reportId)
       ) {
-        return res.status(400).send("Invalid patient or report ID.");
+        return res.status(400).json({
+          success: false,
+          message: "Invalid patient or report ID",
+        });
       }
 
-      const patient = await Patient.findById(patientId);
+      const patient = await Patient.findById(
+        patientId
+      );
 
       if (!patient) {
-        return res.status(404).send("Patient not found.");
+        return res.status(404).json({
+          success: false,
+          message: "Patient not found",
+        });
       }
 
       const report = patient.reports.id(reportId);
 
-      if (!report) {
-        return res.status(404).send("Report not found.");
+      if (!report || !report.publicId) {
+        return res.status(404).json({
+          success: false,
+          message: "Report not found",
+        });
       }
 
-      const safeFilename = path.basename(report.filename);
-      const filePath = path.join(reportsDirectory, safeFilename);
+      const reportUrl = cloudinary.url(
+        report.publicId,
+        {
+          resource_type:
+            report.resourceType || "raw",
 
-      if (!fs.existsSync(filePath)) {
-        return res.status(404).send("PDF file not found.");
-      }
+          type: "upload",
 
-      const stats = fs.statSync(filePath);
-
-      if (!stats.isFile() || stats.size === 0) {
-        return res.status(404).send("PDF file is unavailable.");
-      }
-
-      res.status(200);
-      res.setHeader("Content-Type", "application/pdf");
-      res.setHeader(
-        "Content-Disposition",
-        `inline; filename="${path.basename(report.originalName)}"`
-      );
-      res.setHeader("Content-Length", stats.size);
-      res.setHeader("X-Content-Type-Options", "nosniff");
-
-      const pdfStream = fs.createReadStream(filePath);
-
-      pdfStream.on("error", (error) => {
-        console.error("PDF stream error:", error);
-
-        if (!res.headersSent) {
-          res.status(500).end("Unable to read PDF file.");
-        } else {
-          res.destroy(error);
+          secure: true,
         }
-      });
+      );
 
-      pdfStream.pipe(res);
+      return res.redirect(reportUrl);
     } catch (error) {
-      console.error("Report route error:", error);
+      console.error(
+        "Report access error:",
+        error.message
+      );
 
-      if (!res.headersSent) {
-        res.status(500).send("Unable to open PDF report.");
-      } else {
-        res.destroy(error);
-      }
+      return res.status(500).json({
+        success: false,
+        message: "Unable to open report",
+      });
     }
   }
 );
 
 // =====================================
-// ERROR HANDLER
+// MULTER ERROR HANDLER
 // =====================================
 
-app.use((err, req, res, next) => {
-  if (res.headersSent) {
-    return next(err);
-  }
+app.use((error, req, res, next) => {
+  console.error(
+    "Request error:",
+    error.message
+  );
 
-  if (err instanceof multer.MulterError) {
-    let message = err.message;
-
-    if (err.code === "LIMIT_FILE_SIZE") {
-      message = "Each PDF must be 5 MB or smaller.";
-    } else if (err.code === "LIMIT_FILE_COUNT") {
-      message = "You can upload a maximum of 10 PDF reports.";
-    }
-
+  if (error instanceof multer.MulterError) {
     return res.status(400).json({
       success: false,
-      message,
+      message:
+        error.code === "LIMIT_FILE_SIZE"
+          ? "Each PDF must be smaller than 5 MB"
+          : error.message,
     });
   }
 
-  if (err) {
-    return res.status(400).json({
-      success: false,
-      message: err.message || "Request failed.",
-    });
-  }
-
-  next();
+  return res.status(400).json({
+    success: false,
+    message:
+      error.message || "Something went wrong",
+  });
 });
 
 // =====================================
-// CONNECT MONGODB + START SERVER
+// SERVER
 // =====================================
 
-async function startServer() {
-  try {
-    if (!process.env.MONGO_URI) {
-      throw new Error("MONGO_URI is missing from backend/.env");
-    }
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(
+      `Server running on port ${PORT}`
+    );
 
-    await mongoose.connect(process.env.MONGO_URI);
-
-    console.log("MongoDB connected successfully.");
-
-    app.listen(PORT, () => {
-      console.log(`Backend running at http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.error("Backend startup error:", error.message);
-    process.exit(1);
-  }
+    console.log(
+      "CORS enabled for localhost development ports"
+    );
+  });
 }
 
-startServer();
+module.exports = app;
