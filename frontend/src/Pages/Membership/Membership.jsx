@@ -171,7 +171,7 @@ const plans = [
   },
 ];
 
-const API_URL = "http://localhost:5000/api/payment";
+const API_URL = "https://physicotherapy-wvwm.vercel.app/api/payment";
 
 const Membership = () => {
   const [loadingPlan, setLoadingPlan] = useState(null);

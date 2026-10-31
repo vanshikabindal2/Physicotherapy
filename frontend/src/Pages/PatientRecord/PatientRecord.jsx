@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./PatientRecord.css";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://physicotherapy-wvwm.vercel.app";
 
 const PatientRecord = () => {
   const [searchParams] = useSearchParams();
@@ -11,6 +11,10 @@ const PatientRecord = () => {
   const [patient, setPatient] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  // =====================================
+  // FETCH PATIENT HISTORY
+  // =====================================
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -45,7 +49,7 @@ const PatientRecord = () => {
         }
 
         if (!data.success || !data.patient) {
-          throw new Error("No patient records found for this number.");
+          throw new Error("No patient records found.");
         }
 
         setPatient(data.patient);
@@ -54,7 +58,7 @@ const PatientRecord = () => {
 
         setError(
           err.message === "Failed to fetch"
-            ? "Unable to connect to the server. Please check whether the backend is running."
+            ? "Unable to connect to the server. Please check your backend."
             : err.message || "Something went wrong while loading records."
         );
       } finally {
@@ -65,18 +69,26 @@ const PatientRecord = () => {
     fetchHistory();
   }, [phone]);
 
+  // =====================================
+  // OPEN / VIEW PATIENT REPORT
+  // =====================================
+
   const openReport = (patientId, reportId) => {
     if (!patientId || !reportId) {
       setError("Patient or report ID is missing.");
       return;
     }
 
-    const url =
-      `${API_URL}/api/patients/report/` +
-      `${encodeURIComponent(patientId)}/${encodeURIComponent(reportId)}`;
+    const url = `${API_URL}/api/patients/report/${encodeURIComponent(
+      patientId
+    )}/${encodeURIComponent(reportId)}`;
 
     window.open(url, "_blank", "noopener,noreferrer");
   };
+
+  // =====================================
+  // LOADING SCREEN
+  // =====================================
 
   if (loading) {
     return (
@@ -89,13 +101,21 @@ const PatientRecord = () => {
     );
   }
 
+  // =====================================
+  // ERROR SCREEN
+  // =====================================
+
   if (error) {
     return (
       <main className="records-page">
         <div className="records-message">
           <h2>Unable to show records</h2>
           <p>{error}</p>
-          <button onClick={() => window.history.back()}>
+
+          <button
+            type="button"
+            onClick={() => window.history.back()}
+          >
             Go Back
           </button>
         </div>
@@ -103,32 +123,50 @@ const PatientRecord = () => {
     );
   }
 
+  // =====================================
+  // NO PATIENT SCREEN
+  // =====================================
+
   if (!patient) {
     return (
       <main className="records-page">
         <div className="records-message">
           <h2>No Records Found</h2>
-          <p>No patient records were found for this mobile number.</p>
+          <p>
+            No patient records were found for this mobile number.
+          </p>
         </div>
       </main>
     );
   }
 
+  // =====================================
+  // PATIENT RECORD PAGE
+  // =====================================
+
   return (
     <main className="records-page">
+
+      {/* HEADER */}
+
       <header className="records-header">
         <div className="records-logo">✚</div>
 
         <div>
           <p className="records-eyebrow">PATIENT PORTAL</p>
+
           <h1>My Health Records</h1>
+
           <p>
             Your treatment details and medical reports in one place.
           </p>
         </div>
       </header>
 
+      {/* PATIENT DETAILS */}
+
       <section className="records-card">
+
         <div className="records-card-heading">
           <div className="patient-avatar">
             {patient.name?.charAt(0)?.toUpperCase() || "P"}
@@ -141,6 +179,7 @@ const PatientRecord = () => {
         </div>
 
         <div className="records-details">
+
           <div>
             <span>Mobile Number</span>
             <strong>{patient.phone}</strong>
@@ -160,9 +199,13 @@ const PatientRecord = () => {
             <span>Health Concern</span>
             <strong>{patient.problem}</strong>
           </div>
+
         </div>
 
+        {/* MEDICAL REPORTS */}
+
         <div className="records-report-section">
+
           <h3>Medical Reports</h3>
 
           <p className="records-report-subtitle">
@@ -170,16 +213,25 @@ const PatientRecord = () => {
           </p>
 
           {patient.reports?.length > 0 ? (
+
             <div className="records-report-list">
+
               {patient.reports.map((report) => (
+
                 <div
                   className="records-report-item"
-                  key={report.id}
+                  key={report._id}
                 >
-                  <div className="pdf-icon">PDF</div>
+
+                  <div className="pdf-icon">
+                    PDF
+                  </div>
 
                   <div className="pdf-info">
-                    <strong>{report.originalName}</strong>
+
+                    <strong>
+                      {report.originalName}
+                    </strong>
 
                     <span>
                       {report.size
@@ -190,32 +242,49 @@ const PatientRecord = () => {
                     {report.uploadedAt && (
                       <span>
                         Uploaded:{" "}
-                        {new Date(report.uploadedAt).toLocaleDateString()}
+                        {new Date(
+                          report.uploadedAt
+                        ).toLocaleDateString()}
                       </span>
                     )}
+
                   </div>
 
                   <button
                     type="button"
                     className="records-view-button"
                     onClick={() =>
-                      openReport(patient.id, report.id)
+                      openReport(
+                        patient._id,
+                        report._id
+                      )
                     }
                   >
                     View Report ↗
                   </button>
+
                 </div>
+
               ))}
+
             </div>
+
           ) : (
+
             <p>No reports have been uploaded yet.</p>
+
           )}
+
         </div>
+
       </section>
+
+      {/* FOOTER */}
 
       <footer className="records-footer">
         Your health information deserves privacy and care.
       </footer>
+
     </main>
   );
 };

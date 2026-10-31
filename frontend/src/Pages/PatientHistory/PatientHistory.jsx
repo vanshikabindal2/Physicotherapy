@@ -30,7 +30,7 @@ const PatientHistory = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/patients/history",
+        "https://physicotherapy-wvwm.vercel.app/api/patients/history",
         {
           method: "POST",
           headers: {
