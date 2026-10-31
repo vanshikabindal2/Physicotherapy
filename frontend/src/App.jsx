@@ -13,11 +13,12 @@ import Membership from './Pages/Membership/Membership';
 import Bookappoin from './Pages/Bookappoin/Bookappoin';
 import PatientHistory from './Pages/PatientHistory/PatientHistory';
 import PatientRecord from './Pages/PatientRecord/PatientRecord'
+import Scroll from './components/Scrollbar/Scroll'
 const App = () => {
   return (
   <>
       <Navbar />
-
+<Scroll/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

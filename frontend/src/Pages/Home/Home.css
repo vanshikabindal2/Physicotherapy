@@ -563,7 +563,8 @@
   }
 
   .recovery-script {
-    font-size: clamp(58px, 7vw, 80px);
+    /* font-size: clamp(58px, 7vw, 80px); */
+    font-size: clamp(50px, 6vw, 75px);
   }
 
   .recovery-side-note {
@@ -654,7 +655,8 @@
 
   .recovery-script {
     margin-top: 7px;
-    font-size: clamp(56px, 12vw, 76px);
+    /* font-size: clamp(56px, 12vw, 76px); */
+     font-size: clamp(46px, 9vw, 70px);
     letter-spacing: -1px;
   }
 
@@ -800,7 +802,8 @@
   }
 
   .recovery-script {
-    font-size: 53px;
+    /* font-size: 53px; */
+     font-size: 40px;
   }
 
   .trust-item {
