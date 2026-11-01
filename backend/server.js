@@ -15,52 +15,43 @@ const PORT = process.env.PORT || 5000;
 // CORS MIDDLEWARE
 // =====================================
 
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       console.log("Frontend Origin:", origin);
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      console.log("Frontend Origin:", origin);
 
-//       // Allow localhost on any port during development
-//       if (
-//         !origin ||
-//         /^http:\/\/localhost:\d+$/.test(origin) ||
-//         /^http:\/\/127\.0\.0\.1:\d+$/.test(origin)
-//       ) {
-//         return callback(null, true);
-//       }
+      // Allow localhost on any port during development
+      if (
+        !origin ||
+        /^http:\/\/localhost:\d+$/.test(origin) ||
+        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
 
-//       // Allow configured production frontend
-//       if (origin === process.env.FRONTEND_URL) {
-//         return callback(null, true);
-//       }
+      // Allow configured production frontend
+      if (origin === process.env.FRONTEND_URL) {
+        return callback(null, true);
+      }
 
-//       return callback(new Error("CORS blocked: " + origin));
-//     },
+      return callback(new Error("CORS blocked: " + origin));
+    },
 
-//     methods: [
-//       "GET",
-//       "POST",
-//       "PUT",
-//       "DELETE",
-//       "OPTIONS",
-//     ],
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "OPTIONS",
+    ],
 
-//     allowedHeaders: [
-//       "Content-Type",
-//       "Authorization",
-//     ],
-//   })
-// );
-const cors = require("cors");
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+    ],
+  })
+);
 
-app.use(cors({
-  origin: [
-    "https://physicotherapy-bs9wzy2l4-vanshikabindal2s-projects.vercel.app",
-    "http://localhost:5173"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
 // =====================================
 // BODY PARSER
 // =====================================
