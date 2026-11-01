@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./PatientForm.css";
 
-const API_URL = "https://physicotherapy-wvwm.vercel.app/api/patients";
 
+const API_URL = "https://physicotherapy-wvwm.vercel.app/api/patients";
 const PatientForm = () => {
   const [formData, setFormData] = useState({
     name: "",
