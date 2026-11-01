@@ -15,22 +15,21 @@ const PORT = process.env.PORT || 5000;
 // CORS MIDDLEWARE
 // =====================================
 
+
 app.use(
   cors({
     origin: (origin, callback) => {
       console.log("Frontend Origin:", origin);
 
-      // Allow localhost on any port during development
-      if (
-        !origin ||
-        /^http:\/\/localhost:\d+$/.test(origin) ||
-        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin)
-      ) {
-        return callback(null, true);
-      }
+      const allowedOrigins = [
+        "https://physicotherapy.vercel.app",
+        "https://physicotherapy-a8rqpzc6q-vanshikabindal2s-projects.vercel.app",
+        process.env.FRONTEND_URL,
+        "http://localhost:5173",
+        "http://localhost:5174",
+      ].filter(Boolean);
 
-      // Allow configured production frontend
-      if (origin === process.env.FRONTEND_URL) {
+      if (!origin || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
@@ -42,6 +41,7 @@ app.use(
       "POST",
       "PUT",
       "DELETE",
+      "PATCH",
       "OPTIONS",
     ],
 
@@ -51,6 +51,7 @@ app.use(
     ],
   })
 );
+
 
 // =====================================
 // BODY PARSER
